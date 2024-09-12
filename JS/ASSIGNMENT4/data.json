@@ -1,0 +1,64 @@
+{
+  "products": [
+    {
+      "name": "Blue Jeans",
+      "price": 30,
+      "color": "Blue",
+      "isAvailable": true
+    },
+    {
+      "name": "Red Dress",
+      "price": 50,
+      "color": "Red",
+      "isAvailable": false
+    },
+    {
+      "name": "Black Sneaker",
+      "price": 70,
+      "color": "Black",
+      "isAvailable": true
+    },
+    {
+      "name": "White T-Shirt",
+      "price": 20,
+      "color": "White",
+      "isAvailable": true
+    },
+    {
+      "name": "Green Hoodie",
+      "price": 40,
+      "color": "Green",
+      "isAvailable": false
+    },
+    {
+      "name": "Yellow Sunglasses",
+      "price": 35,
+      "color": "Yellow",
+      "isAvailable": true
+    },
+    {
+      "name": "Brown Belt",
+      "price": 25,
+      "color": "Brown",
+      "isAvailable": true
+    },
+    {
+      "name": "Purple Scarf",
+      "price": 15,
+      "color": "Purple",
+      "isAvailable": false
+    },
+    {
+      "name": "Pink Hat",
+      "price": 10,
+      "color": "Pink",
+      "isAvailable": true
+    },
+    {
+      "name": "Orange Watch",
+      "price": 80,
+      "color": "Orange",
+      "isAvailable": false
+    }
+  ]
+}
