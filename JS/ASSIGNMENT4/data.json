@@ -1,64 +1,43 @@
-{
-  "products": [
+{ "products" :[
     {
-      "name": "Blue Jeans",
-      "price": 30,
-      "color": "Blue",
-      "isAvailable": true
+      "id": "001",
+      "name": "Wireless Mouse",
+      "description": "A high-precision wireless mouse with adjustable DPI settings.",
+      "price": 29.99,
+      "category": "Electronics",
+      "stock": 150
     },
     {
-      "name": "Red Dress",
-      "price": 50,
-      "color": "Red",
-      "isAvailable": false
+      "id": "002",
+      "name": "Bluetooth Headphones",
+      "description": "Over-ear Bluetooth headphones with noise cancellation.",
+      "price": 89.99,
+      "category": "Electronics",
+      "stock": 75
     },
     {
-      "name": "Black Sneaker",
-      "price": 70,
-      "color": "Black",
-      "isAvailable": true
+      "id": "003",
+      "name": "Ergonomic Office Chair",
+      "description": "An ergonomic office chair with adjustable height and lumbar support.",
+      "price": 199.99,
+      "category": "Furniture",
+      "stock": 20
     },
     {
-      "name": "White T-Shirt",
-      "price": 20,
-      "color": "White",
-      "isAvailable": true
+      "id": "004",
+      "name": "Yoga Mat",
+      "description": "A non-slip yoga mat with extra cushioning for comfort.",
+      "price": 24.99,
+      "category": "Fitness",
+      "stock": 100
     },
     {
-      "name": "Green Hoodie",
-      "price": 40,
-      "color": "Green",
-      "isAvailable": false
-    },
-    {
-      "name": "Yellow Sunglasses",
-      "price": 35,
-      "color": "Yellow",
-      "isAvailable": true
-    },
-    {
-      "name": "Brown Belt",
-      "price": 25,
-      "color": "Brown",
-      "isAvailable": true
-    },
-    {
-      "name": "Purple Scarf",
-      "price": 15,
-      "color": "Purple",
-      "isAvailable": false
-    },
-    {
-      "name": "Pink Hat",
-      "price": 10,
-      "color": "Pink",
-      "isAvailable": true
-    },
-    {
-      "name": "Orange Watch",
-      "price": 80,
-      "color": "Orange",
-      "isAvailable": false
+      "id": "005",
+      "name": "Stainless Steel Water Bottle",
+      "description": "A durable stainless steel water bottle with a leak-proof cap.",
+      "price": 15.99,
+      "category": "Home & Kitchen",
+      "stock": 200
     }
-  ]
+    ]
 }
