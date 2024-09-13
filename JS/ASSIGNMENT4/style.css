@@ -34,7 +34,7 @@ a {
 }
 #productList {
   display: flex;
-  width: 80vw;
+  width: 90vw;
   background-color: rgb(195, 184, 184);
   flex-direction: column;
   align-items: start;
@@ -47,16 +47,18 @@ a {
   justify-content: space-between;
   width: 100%;
   display: grid;
+  grid-gap: 32px;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .productTitle {
   justify-content: space-between;
-  width: 80vw;
+  width: 90vw;
   background-color: navy;
   color: white;
   margin: 2px auto;
   padding: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 32px;
 }

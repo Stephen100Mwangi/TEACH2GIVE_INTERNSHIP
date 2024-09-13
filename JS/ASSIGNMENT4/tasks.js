@@ -21,11 +21,11 @@ document.addEventListener ('DOMContentLoaded', () => {
           const productCategory = document.createElement ('div');
           const productStock = document.createElement ('div');
 
-          productName.textContent = `Name: ${product.name}`;
-          productDescription.textContent = `Description: ${product.description}`;
-          productPrice.textContent = `Price: $${product.price}`;
-          productCategory.textContent = `Category: ${product.category}`;
-          productStock.textContent = `Stock: ${product.stock}`;
+          productName.textContent = `${product.name}`;
+          productDescription.textContent = `${product.description}`;
+          productPrice.textContent = `$${product.price}`;
+          productCategory.textContent = `${product.category}`;
+          productStock.textContent = `${product.stock}`;
 
           // Append all product details to the product item
           productItem.appendChild (productName);
@@ -33,6 +33,8 @@ document.addEventListener ('DOMContentLoaded', () => {
           productItem.appendChild (productPrice);
           productItem.appendChild (productCategory);
           productItem.appendChild (productStock);
+
+          productItem.classList.add ('productList');
 
           // Append the product item to the product list
           productList.appendChild (productItem);
