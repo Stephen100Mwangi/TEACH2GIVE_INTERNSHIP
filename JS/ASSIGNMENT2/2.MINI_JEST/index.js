@@ -1,136 +1,116 @@
-const startButton = document.getElementById ('startButton');
-const finishButton = document.getElementById ('finishButton');
-
-const testResults = {
-  subtractionTest: 'Not Done',
-  additionTest: 'Not Done',
-  divisionTest: 'Not Done',
-  multiplicationTest: 'Not Done',
-};
-
-console.log (testResults);
-
-const testAddition = () => {
-  let number1 = parseFloat (prompt ('Input number 1: '));
-  let number2 = parseFloat (prompt ('Input number 2: '));
-  let score = number1 + number2;
-  let result = parseFloat (
-    prompt ('Input the result for adding the two numbers')
-  );
-  if (result === score) {
-    console.log (`Correct🎅🏽😀 (${number1} + ${number2} = ${score})`);
-    alert (`Correct🎅🏽😀 (${number1} + ${number2} = ${score})`);
-    testResults.additionTest = 'Correct';
-    startTest ();
-  } else {
-    console.log (`Incorrect😣😴 (${number1} + ${number2} = ${score})`);
-    alert (`Incorrect😣😴 (${number1} + ${number2} = ${score})`);
-    testResults.additionTest = 'Incorrect';
-    startTest ();
+// Define the TestRunner class
+class TestRunner {
+  constructor() {
+    this.tests = [];
+    this.executionOrder = 'sequential'; // Default order
   }
-};
 
-const testSubtraction = () => {
-  let number1 = parseFloat (prompt ('Input number 1: '));
-  let number2 = parseFloat (prompt ('Input number 2: '));
-  let score = number1 - number2;
-  let result = parseFloat (
-    prompt ('Input the result for subtracting the two numbers')
-  );
-  if (result === score) {
-    console.log (`Correct🎅🏽😀 (${number1} - ${number2} = ${score})`);
-    alert (`Correct🎅🏽😀 (${number1} - ${number2} = ${score})`);
-    testResults.subtractionTest = 'Correct';
-    startTest ();
-  } else {
-    console.log (`Incorrect😣😴 (${number1} - ${number2} = ${score})`);
-    alert (`Incorrect😣😴 (${number1} - ${number2} = ${score})`);
-    testResults.subtractionTest = 'Incorrect';
-    startTest ();
+  registerTest(name, testFunction) {
+    this.tests.push({ name, testFunction });
   }
-};
 
-const testMultiplication = () => {
-  let number1 = parseFloat (prompt ('Input number 1: '));
-  let number2 = parseFloat (prompt ('Input number 2: '));
-  let score = number1 * number2;
-  let result = parseFloat (
-    prompt ('Input the result for multiplying the two numbers')
-  );
-  if (result === score) {
-    console.log (`Correct🎅🏽😀 (${number1} * ${number2} = ${score})`);
-    alert (`Correct🎅🏽😀 (${number1} * ${number2} = ${score})`);
-    testResults.multiplicationTest = 'Correct';
-    startTest ();
-  } else {
-    console.log (`Incorrect😣😴 (${number1} * ${number2} = ${score})`);
-    alert (`Incorrect😣😴 (${number1} * ${number2} = ${score})`);
-    testResults.multiplicationTest = 'Incorrect';
-    startTest ();
+  runTests() {
+    let passedTests = 0;
+    let failedTests = 0;
+
+    console.log('Running Tests...\n');
+
+    // Sort test cases based on the execution order
+    const testsToRun = this.executionOrder === 'reverse' 
+      ? this.tests.reverse() 
+      : this.tests;
+
+    for (const test of testsToRun) {
+      try {
+        test.testFunction();
+        console.log(`✅ Test "${test.name}" passed.`);
+        passedTests++;
+      } catch (error) {
+        console.error(`❌ Test "${test.name}" failed: ${error.message}`);
+        failedTests++;
+      }
+    }
+
+    console.log(`\nSummary: ${passedTests} passed, ${failedTests} failed.`);
   }
-};
 
-const testDivision = () => {
-  let number1 = parseFloat (prompt ('Input number 1: '));
-  let number2 = parseFloat (prompt ('Input number 2: '));
-  let score = number1 / number2;
-  let result = parseFloat (
-    prompt ('Input the result for dividing the two numbers')
-  );
-  if (result === score) {
-    console.log (`Correct🎅🏽😀 (${number1} / ${number2} = ${score})`);
-    alert (`Correct🎅🏽😀 (${number1} / ${number2} = ${score})`);
-    testResults.divisionTest = 'Correct';
-    startTest ();
-  } else {
-    console.log (`Incorrect😣😴 (${number1} / ${number2} = ${score})`);
-    alert (`Incorrect😣😴 (${number1} / ${number2} = ${score})`);
-    testResults.divisionTest = 'Incorrect';
-    startTest ();
+  filterTests(filter) {
+    this.tests = this.tests.filter(test => test.name.includes(filter));
   }
-};
 
-const startTest = () => {
-  const user_prompt = parseInt (
-    prompt (
-      'Input test you wish to take - [1 OR 2 OR 3 OR 4 OR 5]: \n 1. Addition \n 2. Subtraction \n 3. Multiplication \n 4. Division \n 5. Finish Test'
-    )
-  );
-  switch (user_prompt) {
-    case 1:
-      testAddition ();
-      break;
-    case 2:
-      testSubtraction ();
-      break;
-    case 3:
-      testMultiplication ();
-      break;
-    case 4:
-      testDivision ();
-      break;
-    case 5:
-      viewScores ();
-      break;
-
-    default:
-      console.log ('Invalid input');
-      startTest ();
-      break;
+  setExecutionOrder(order) {
+    this.executionOrder = order;
   }
+}
+
+// Create a TestRunner instance
+const runner = new TestRunner();
+
+// Define assertion functions
+const assert = {
+  assertEqual(actual, expected, message = 'Values should be equal') {
+    if (actual !== expected) {
+      throw new Error(`${message}. Expected: ${expected}, but got: ${actual}`);
+    }
+  },
+
+  assertNotEqual(actual, expected, message = 'Values should not be equal') {
+    if (actual === expected) {
+      throw new Error(`${message}. Value should not be: ${expected}`);
+    }
+  },
+
+  assertTrue(value, message = 'Value should be true') {
+    if (!value) {
+      throw new Error(`${message}. Value is falsy.`);
+    }
+  },
+
+  assertFalse(value, message = 'Value should be false') {
+    if (value) {
+      throw new Error(`${message}. Value is truthy.`);
+    }
+  },
+
+  assertContains(array, item, message = 'Array should contain the item') {
+    if (!array.includes(item)) {
+      throw new Error(`${message}. Array does not contain: ${item}`);
+    }
+  },
 };
 
-const viewScores = () => {
-  let results = `Test Results:\n
-    Addition Test : ${testResults.additionTest}\n
-    Subtraction Test : ${testResults.subtractionTest}\n
-    Multiplication Test : ${testResults.multiplicationTest}\n
-    Division Test : ${testResults.divisionTest}`;
+// Define describe and test functions
+function describe(name, fn) {
+  console.log(`\nSuite: ${name}`);
+  fn();
+}
 
-  console.log (results);
-  alert (results);
-  return testResults;
-};
+function test(name, fn) {
+  runner.registerTest(name, fn);
+}
 
-startButton.addEventListener ('click', startTest);
-finishButton.addEventListener ('click', viewScores);
+// Example test cases
+describe('Array Assertions', () => {
+  test('Array contains item', () => {
+    const fruits = ['apple', 'banana', 'cherry'];
+    assert.assertContains(fruits, 'banana');
+  });
+
+  test('Array does not contain item', () => {
+    const fruits = ['apple', 'banana', 'cherry'];
+    assert.assertContains(fruits, 'grape');
+  });
+});
+
+describe('Basic Equality Checks', () => {
+  test('Equal numbers', () => {
+    assert.assertEqual(2 + 2, 4);
+  });
+
+  test('Not equal numbers', () => {
+    assert.assertNotEqual(2 + 2, 5);
+  });
+},
+
+// Run the tests
+runner.runTests());
