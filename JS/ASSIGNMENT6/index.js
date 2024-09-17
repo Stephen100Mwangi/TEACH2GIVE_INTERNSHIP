@@ -129,3 +129,16 @@ function analyzeData () {
 }
 
 console.log (analyzeData (users));
+
+const availableFoods = [
+  {id: 'qwe234dfh', name: 'Burger', image: '🍔🍔', price: 234},
+  {id: 'qwe2356dxh', name: 'pizza', image: '🍕🍕', price: 400},
+  {id: 'qwe2456yh', name: 'meat', image: '🍖🍖', price: 500},
+  {id: 'qwe2785yh', name: 'chicken', image: '🍗🍗', price: 1200},
+];
+
+const foodsAbove450 = availableFoods.filter (x => x.price > 450);
+console.log (foodsAbove450);
+
+const sum = foodsAbove450.reduce ((a, b) => a + b.price, 0);
+console.log ('My total bill for items above 450 is ' + sum);
