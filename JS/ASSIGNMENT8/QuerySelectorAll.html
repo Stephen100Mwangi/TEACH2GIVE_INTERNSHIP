@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+      integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    body {
+      padding: 30px;
+    }
+
+    .content {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      transition: 1s ease all;
+      text-align: center;
+    }
+  </style>
+  <body class="jumbotron">
+    <div>
+      <button class="btn-primary text-center btns content">
+        rotate me i am crazy
+      </button>
+      <button class="btn-white text-center btns content">
+        rotate me i am crazy
+      </button>
+      <button class="btn-danger text-center btns content">
+        rotate me i am crazy
+      </button>
+    </div>
+
+    <script>
+        //once you create an element in html, you can access that elemtn in JS using querySelector 
+        //lets acccess the buttonms we created
+        const buttons = document.querySelectorAll('.btns')
+        var content = document.querySelector('.content')
+
+        let rotate = 360
+
+        const goCrazy = () => {
+            let offsetLeft = Math.random() * window.innerWidth
+            let offsetRight = Math.random() * window.innerHeight
+
+            buttons.forEach((elem) => elem = rotated())
+        }
+
+        function rotated() {
+            content.style = 'transform: rotate(' + rotate + 'deg)'
+            rotate += 360
+        }
+
+        buttons.forEach(button => button.addEventListener('mouseenter', goCrazy))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+@import url(https://fonts.googleapis.com/css?family=SUSE:100,200,300,regular,500,600,700,800);
+* {
+  font-family: SUSE;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+.image {
+  height: 280px;
+  width: 360px;
+  border-radius: 20px 20px 0px 0px;
+  object-fit: cover;
+}
+
+.listContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 56px;
+  margin: auto;
+}
+
+.id {
+  font-size: x-small;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: navy;
+  padding: 5px;
+  height: 30px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  border-radius: 50%;
+  color: white;
+}
+.title {
+  font-size: large;
+  font: 800;
+  color: navy;
+}
+.location {
+  font-size: medium;
+}
+.price {
+  font-size: medium;
+  font-weight: 200;
+}
+.date {
+  font-size: medium;
+  font-weight: 500;
+  font-family: monospace;
+  text-align: left;
+}
+.company {
+  font-size: larger;
+  font-weight: 400;
+}
+
+.filters {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.filters button {
+  padding: 8px 12px;
+  color: white;
+  background-color: #00000040;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+.filters button:hover {
+  color: white;
+  background-color: #000000;
+}
+.buyButton {
+  padding: 10px 12px;
+  color: white;
+  background-color: navy;
+  margin-top: 20px;
+  width: 90%;
+  margin-top: 20px;
+  margin: auto;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+.buyButton:hover {
+  border-radius: 20px;
+}
+
+.card {
+  box-shadow: 0px 0px 4px #00000015;
+  /* background-color: #00000040; */
+  border-radius: 20px 20px 0px 0px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: left;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  justify-content: start;
+  align-items: start;
+  margin-bottom: 32px;
+  padding: 12px;
+}
+
+.favButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: orangered;
+  padding: 5px;
+  border-radius: 50%;
+  top: 10px;
+  right: 10px;
+}

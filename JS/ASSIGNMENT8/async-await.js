@@ -1,15 +1,20 @@
 let listContainer = document.querySelector ('.container');
 
-async function fetchData () {
+(async function fetchData () {
   const response = await fetch ('https://jsonplaceholder.typicode.com/todos');
   console.log (response);
 
   const data = await response.json ();
   console.log (data);
-  const slicedData = data.slice (0, 20);
+
+  const slicedData = data
+    .slice (0, 20)
+    .sort ((a, b) => a.title.localeCompare (b.title));
+
   for (let i = 0; i < slicedData.length; i++) {
     const element = slicedData[i];
     const newList = document.createElement ('div');
+
     const uid = document.createElement ('div');
     const _id = document.createElement ('div');
     const title = document.createElement ('div');
@@ -35,6 +40,6 @@ async function fetchData () {
   }
 
   //   data.for
-}
+}) ();
 
 fetchData ();
