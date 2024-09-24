@@ -90,6 +90,7 @@ function addToCart (productId) {
     }
     updateCartUI ();
   }
+  updateCartUI ();
 }
 
 //Increase product quantity
