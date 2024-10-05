@@ -25,6 +25,10 @@ The repository employs fullstack web development concepts such as
 1. HTML
 2. CSS
 3. JavaScript
+4. Typescript
+5. Node
+6. Express
+7. CI/CD
 
 ## React
 
