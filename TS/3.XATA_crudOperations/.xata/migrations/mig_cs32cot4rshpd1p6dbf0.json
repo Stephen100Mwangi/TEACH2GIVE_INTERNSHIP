@@ -1,0 +1,26 @@
+{
+  "done": true,
+  "migration": {
+    "name": "mig_cs32cot4rshpd1p6dbf0",
+    "operations": [
+      {
+        "add_column": {
+          "table": "students",
+          "column": {
+            "pk": false,
+            "name": "Age",
+            "type": "int",
+            "unique": false,
+            "comment": "",
+            "nullable": true
+          }
+        }
+      }
+    ]
+  },
+  "migrationType": "pgroll",
+  "name": "mig_cs32cot4rshpd1p6dbf0",
+  "parent": "mig_cs32ch54rshpd1p6dbe0",
+  "schema": "public",
+  "startedAt": "2024-10-09T06:44:52.121019Z"
+}

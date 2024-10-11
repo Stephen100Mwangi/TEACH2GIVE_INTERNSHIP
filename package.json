@@ -1,0 +1,12 @@
+{
+  "name": "the_jitu",
+  "version": "1.0.0",
+  "description": "The following repository is a collection of assignments / assessments given at Teach2Give - The Jitu Internship program. The collection will highlight basics of HTML and CSS. In the collection you will come across and learn about",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

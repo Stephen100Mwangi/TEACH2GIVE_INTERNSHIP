@@ -1,0 +1,28 @@
+import { NextFunction, Response, Request } from "express";
+
+const error  = new Error()
+/**
+ * 
+interface Error {
+    name: string;
+    message: string;
+    stack?: string;
+}
+ */
+
+//cutom error interface
+interface CustomError extends Error {
+    status?:number; //we made optional to flag it on every error
+}
+
+// we created a custom middleware to hadle all errors
+const errorHandler = (error: any, req: Request, res:Response, next:NextFunction) => { 
+    const statusCode = error.status  || 500
+    const errorMessage = error.message || "Internal server error" 
+    res.status(statusCode).json({
+        status: statusCode,
+        message: errorMessage
+    })
+}
+
+export {errorHandler, CustomError}

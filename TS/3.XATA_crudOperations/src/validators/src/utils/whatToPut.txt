@@ -1,0 +1,5 @@
+//Helper functions
+// a helper fetch functions
+const fetchData = async() => {
+    
+}

@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Stephen-Mwangi-s-workspace-de3k82.us-east-1.xata.sh/db/DB001",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}

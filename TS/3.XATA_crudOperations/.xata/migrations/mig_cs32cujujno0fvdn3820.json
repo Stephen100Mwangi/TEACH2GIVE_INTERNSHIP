@@ -1,0 +1,26 @@
+{
+  "done": true,
+  "migration": {
+    "name": "mig_cs32cujujno0fvdn3820",
+    "operations": [
+      {
+        "add_column": {
+          "table": "students",
+          "column": {
+            "pk": false,
+            "name": "Grade",
+            "type": "text",
+            "unique": false,
+            "comment": "",
+            "nullable": true
+          }
+        }
+      }
+    ]
+  },
+  "migrationType": "pgroll",
+  "name": "mig_cs32cujujno0fvdn3820",
+  "parent": "mig_cs32cot4rshpd1p6dbf0",
+  "schema": "public",
+  "startedAt": "2024-10-09T06:45:15.232776Z"
+}
