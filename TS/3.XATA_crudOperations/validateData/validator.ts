@@ -28,15 +28,25 @@ const isValidPassword = (password: string): boolean =>{
     return passwordRegex.test(password);
 }
 
-const isValidUsername = (name:string): boolean =>
-    typeof name === 'string' && name.trim.length > 0 && name.trim.length < 20
+const isValidUsername = (name: string): boolean =>
+    typeof name === 'string' && name.trim().length > 5 && name.trim().length < 20
+
+const isValidGrade = (grade: string): boolean => {
+  const validGrades = ['A', 'A-', 'B', 'B-', 'B+', 'C', 'C-', 'C+', 'D', 'D-', 'D+', 'E'];
+  return validGrades.includes(grade);
+};
+
+const isValidStatus = (isActive: boolean): boolean => {
+  const validStatus = [true, false];
+  return validStatus.includes(isActive);
+};
 
 // Middleware for validating create student request
 export const validateCreateStudent = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => { // Explicitly specifying return type as void
   const errors: ValidationError[] = [];
   const { name, age, grade, password, dateOfBirth, isActive, email } = req.body;
 
@@ -46,7 +56,7 @@ export const validateCreateStudent = (
   }
 
   if (!isValidEmail(email)) {
-    errors.push({field:'email',message:'Invalid email - Must be in the form someone@gmail.com'})
+    errors.push({ field: 'email', message: 'Invalid email - Must be in the form someone@gmail.com' });
   }
 
   if (!isValidNumber(age)) {
@@ -59,11 +69,32 @@ export const validateCreateStudent = (
     errors.push({ field: 'grade', message: 'Grade is required and must be a string' });
   }
 
+  if (!isValidDate(dateOfBirth)) {
+    errors.push({ field: 'dateOfBirth', message: 'Date of Birth is required and must be a valid date' });
+  }
+
+  if (!isValidPassword(password)) {
+    errors.push({ field: 'password', message: 'Password is required and must contain at least 8 characters - at least one uppercase letter, one lowercase letter, one number, and one special character' });
+  }
+
+  if (!isValidUsername(name)) {
+    errors.push({ field: 'name', message: 'Name must contain at least 5 characters and at most 20 characters' });
+  }
+
+  if (!isValidGrade(grade)) {
+    errors.push({ field: 'grade', message: 'Invalid grade. Must be one of A, A-, B, B-, B+, C, C-, C+, D, D-, D+, or E.' });
+  }
+
+  if (!isValidStatus(isActive)) {
+    errors.push({ field: 'isActive', message: 'Invalid active status. Must be either true or false.' });
+  }
+
   if (errors.length > 0) {
-    return res.status(400).json({ 
+    res.status(400).json({ 
       message: 'Validation failed', 
       errors 
     });
+    return; // Terminate the middleware function
   }
 
   next();
@@ -74,7 +105,7 @@ export const validateUpdateStudent = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => { // Explicitly specifying return type as void
   const errors: ValidationError[] = [];
   const { name, age, grade, email, dateOfBirth, isActive } = req.body;
 
@@ -116,10 +147,11 @@ export const validateUpdateStudent = (
   }
 
   if (errors.length > 0) {
-    return res.status(400).json({ 
+    res.status(400).json({ 
       message: 'Validation failed', 
       errors 
     });
+    return; // Terminate the middleware function
   }
 
   next();
@@ -130,14 +162,15 @@ export const validateIdParam = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => { // Explicitly specifying return type as void
   const { id } = req.params;
 
   if (!isValidString(id)) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Validation failed',
       errors: [{ field: 'id', message: 'Invalid ID parameter' }]
     });
+    return; // Terminate the middleware function
   }
 
   next();

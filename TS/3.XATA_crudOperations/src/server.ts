@@ -1,160 +1,212 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
+import bcrypt from 'bcrypt';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import { validateCreateStudent, validateUpdateStudent, validateIdParam } from '../validateData/validator'; // Adjust the path as needed
+import { getXataClient } from "./xata";
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swagger.json'; // Ensure you have a swagger.json file
 
 dotenv.config();
 
-// Inference
+// Initialize Express app
 const app: Express = express();
 const port = process.env.PORT || 3000; // Default to port 3000 if not specified
 
-//Define interfaces for request bodies
-interface CreateStudent{
-  name:String,
-  age:Number,
-  grade:String
+// Define interfaces for request bodies
+interface CreateStudent {
+  name: string;
+  age: number;
+  grade: string;
+  password: string;
+  dateOfBirth: string;
+  isActive: boolean;
+  email: string;
 }
 
-interface UpdateStudent{
-  name?:String,
-  age?:Number,
-  grade?:String
+interface UpdateStudent {
+  name?: string;
+  age?: number;
+  grade?: string;
+  password?: string;
+  dateOfBirth?: string;
+  isActive?: boolean;
+  email?: string;
 }
 
-//Middlewares
+// Middlewares
+app.use(helmet()); // Security headers
+app.use(morgan('combined')); // Logging
+app.use(cors({
+  origin: 'http://your-frontend-domain.com', // Replace with your frontend's domain
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true
+})); // CORS
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again after 15 minutes."
+})); // Rate limiting
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+// Swagger API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Health check
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-// Generated with CLI
-import { getXataClient } from "./xata";
+// Helper function to omit sensitive fields
+const omitSensitiveFields = (student: any) => {
+  const { password, ...safeStudent } = student;
+  return safeStudent;
+};
 
-
-//routing params
-//POST Request
-app.post("/api/register",async(req:Request,res:Response)=>{
-  const {name,age,grade} = req.body;
-
-  if(!name || !grade || !age){
-    res.status(400).json({message:"All fields are required"})
-  }else{
+// POST Request - Register a new student
+app.post("/api/register", validateCreateStudent, async (req: Request, res: Response, next: NextFunction) => {
+  const { name, age, grade, password, dateOfBirth, isActive, email } = req.body;
 
   const client = getXataClient();
 
   try {
-    const newStudent = await client.db.students.create({name,Age:age,Grade:grade});
-    res.status(201).json({message:"Student created successfully",newStudent})
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+
+    const newStudent = await client.db.students.create({
+      name,
+      age,
+      grade,
+      password: hashedPassword,
+      dateOfBirth,
+      isActive,
+      email
+    });
+
+    const safeStudent = omitSensitiveFields(newStudent);
+
+    res.status(201).json({ message: "Student created successfully", newStudent: safeStudent });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({message:"Internal server error"})
+    console.error(error);
+    next(error); // Pass to centralized error handler
   }
-}
+});
 
-})
-
-//GET Request
-// GET all
-app.get("/api/users",async (req:Request,res:Response) => {
+// GET Request - Get all students
+app.get("/api/users", async (req: Request, res: Response, next: NextFunction) => {
   const client = getXataClient();
   try {
     const students = await client.db.students.getAll();
-    if (students.length < 1) {
-      res.status(204).json({message:"No students found in the database.",students})
-    }else{
-      res.status(200).json({message:"All students retrieved successfully",students})
+    const safeStudents = students.map(omitSensitiveFields);
+    if (safeStudents.length < 1) {
+      res.status(200).json({ message: "No students found in the database.", students: safeStudents });
+    } else {
+      res.status(200).json({ message: "All students retrieved successfully", students: safeStudents });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({message:"Internal server error"});    
+    console.error(error);
+    next(error); // Pass to centralized error handler
   }
-})
+});
 
-
-//GET Request
-//GET a single student by id
-app.get("/api/users/:id",async (req:Request,res:Response) => {
-  const {id} = req.params;
+// GET Request - Get a single student by id
+app.get("/api/users/:id", validateIdParam, async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
   const client = getXataClient();
 
   try {
     const studentFound = await client.db.students.read(id);
     if (!studentFound) {
-      res.status(404).json({message:"Student NOT found"})
-    }else{
-      res.status(200).json({message:"Student found successfully",studentFound});
+      res.status(404).json({ message: "Student not found" });
+    } else {
+      const safeStudent = omitSensitiveFields(studentFound);
+      res.status(200).json({ message: "Student found successfully", studentFound: safeStudent });
     }
-    
   } catch (error) {
-    console.log(error);
-    res.status(500).json({message:"Internal server error"});    
-  }
-})
-
-//PUT requests - will replace the entire resource, 
-// the body has everything even if not modified
-app.put('/api/users/:id',async (req:Request,res:Response) => {
-  const {id} = req.params;
-  const {name,age,grade,password,dateOfBirth,isActive,email} = req.body;
-  const client = getXataClient();
-
-  try {
-    const updatedUser = await client.db.students.update(id,{name,age,grade,password,dateOfBirth,isActive,email});
-    res.status(200).json({message:"User updated successfully",user: updatedUser})
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({message:"Internal server error"})
+    console.error(error);
+    next(error); // Pass to centralized error handler
   }
 });
 
-// PATCH requests - only the fields that need to be changed will be in the request body
-app.patch('/api/users/:id', async (req: Request, res: Response) => {
+// PUT Request - Replace the entire student resource
+app.put('/api/users/:id', validateIdParam, validateCreateStudent, async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { name,age,grade,password,dateOfBirth,isActive,email } = req.body;
+  const { name, age, grade, password, dateOfBirth, isActive, email } = req.body;
+  const client = getXataClient();
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash the new password
+
+    const updatedUser = await client.db.students.update(id, {
+      name,
+      age,
+      grade,
+      password: hashedPassword,
+      dateOfBirth,
+      isActive,
+      email
+    });
+
+    const safeUser = omitSensitiveFields(updatedUser);
+
+    res.status(200).json({ message: "User updated successfully", user: safeUser });
+  } catch (error) {
+    console.error(error);
+    next(error); // Pass to centralized error handler
+  }
+});
+
+// PATCH Request - Update specific fields of a student
+app.patch('/api/users/:id', validateIdParam, validateUpdateStudent, async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const { name, age, grade, password, dateOfBirth, isActive, email } = req.body;
   const client = getXataClient();
 
   // Build the update object dynamically based on the request body
-  const updateData: any = {};
+  const updateData: Partial<UpdateStudent> = {};
   if (name !== undefined) updateData.name = name;
   if (age !== undefined) updateData.age = age;
   if (grade !== undefined) updateData.grade = grade;
-  if (password !== undefined) updateData.password = password;
+  if (password !== undefined) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    updateData.password = hashedPassword;
+  }
   if (dateOfBirth !== undefined) updateData.dateOfBirth = dateOfBirth;
   if (email !== undefined) updateData.email = email;
   if (isActive !== undefined) updateData.isActive = isActive;
 
-  // If no fields are provided in the request body, return a bad request response
-  if (Object.keys(updateData).length === 0) {
-    res.status(400).json({ message: "No valid fields provided for update" });
-  }
-
   try {
     const updatedUser = await client.db.students.update(id, updateData);
-    res.status(200).json({ message: "User updated successfully", user: updatedUser });
+    const safeUser = omitSensitiveFields(updatedUser);
+    res.status(200).json({ message: "User updated successfully", user: safeUser });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error); // Pass to centralized error handler
   }
 });
 
-
-//delete
-// DELETE method deletes an item based on id
-app.delete('/api/users/:id',async (req:Request,res:Response) => {
-  const {id} = req.params;
+// DELETE Request - Delete a student by id
+app.delete('/api/users/:id', validateIdParam, async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
   const client = getXataClient();
 
   try {
     await client.db.students.delete(id);
     res.status(204).send();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({message:"Internal server error"})
+    console.error(error);
+    next(error); // Pass to centralized error handler
   }
-})
+});
 
+// Centralized error-handling middleware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something went wrong!", error: err.message });
+});
 
 // Start the server
 app.listen(port, () => {
