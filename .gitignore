@@ -46,3 +46,6 @@ $RECYCLE.BIN/
 
 # Expo files
 .expo/
+
+
+REACT/products/node_modules/
