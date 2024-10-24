@@ -6,7 +6,7 @@ import SizeCardComponent from "./SizeCardComponent"
 
 const ProductCard = () => {
     return (
-        <div className="bg-card shadow-2xl -ml-5 z-50 rounded-md flex h-[500px] flex-col gap-y-5 w-fit p-5 max-sm:p-4 max-sm:w-[300px] max-sm:mx-auto max-sm:gap-y-3 max-sm:h-[350px]">
+        <div className="bg-card shadow-2xl -ml-5 z-50 rounded-md flex h-[500px] flex-col gap-y-5 w-fit p-5 max-sm:p-4 max-sm:w-[95%] max-sm:mx-auto max-sm:gap-y-3 max-sm:h-[350px]">
                 <h1 className="text-2xl font-bold max-sm:text-xl">Product Name</h1>
                 <p className="text-base font-light max-sm:text-sm">More Info</p>
                 <p className="text-base font-light max-sm:text-sm">Product | Description</p>
