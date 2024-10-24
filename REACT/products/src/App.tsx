@@ -8,9 +8,9 @@ import { IoIosAddCircle } from "react-icons/io";
 
 const App = () => {
   return (
-    <div className="h-screen w-full relative overflow-clip flex bg-gray justify-start items-start gap-x-1 max-sm:flex max-sm:p-4 max-sm:flex-col max-sm:gap-y-0">
+    <div className="h-screen w-full relative overflow-clip flex bg-gray justify-start items-start gap-x-1 sm:flex sm:justify-center sm:items-center max-sm:flex max-sm:p-4 max-sm:flex-col max-sm:gap-y-0">
 
-      <div className="flex my-3 mb-8 w-full justify-between items-center">
+      <div className="flex my-3 mb-8 w-full justify-between items-center sm:hidden">
         <IoMdMenu className="text-2xl"></IoMdMenu>
         <div className="flex gap-x-4">
           <IoIosSearch className="text-2xl"></IoIosSearch>
