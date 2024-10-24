@@ -4,7 +4,7 @@ interface Props {
 
 const SizeCardComponent = (props: Props) => {
     return (
-        <div className='p-2.5 text-sm font-bold text-black bg-gray'>
+        <div className='p-2.5 max-sm:text-xs max-sm:p-2 text-sm font-bold text-black bg-gray'>
             {props.size}
         </div>
     )

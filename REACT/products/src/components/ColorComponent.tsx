@@ -4,7 +4,7 @@ interface Props {
 
 const ColorComponent = (props: Props) => {
     return (
-        <div className={`size-8 rounded-full bg-${props.color}`}>
+        <div className={`size-8 max-sm:size-5 rounded-full bg-${props.color}`}>
             
         </div>
     )
